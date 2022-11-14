@@ -43,4 +43,4 @@ class Tablet extends DispositivoEletronico{
 }
 
 const s1 = new Smartphone('Samsung', 'Preto', 'Galaxy')
-const t1  = new Tablet('Ipag', true)
+const t1  = new Tablet('Ipad', true)
