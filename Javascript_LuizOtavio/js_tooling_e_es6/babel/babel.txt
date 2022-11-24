@@ -1,4 +1,0 @@
-npx babel mainexample.js -o bundle.js --presets=@babel/env
-        (arquivo que       (arquivo que 
-          quer usar de      babel vai 
-          base)             criar)
