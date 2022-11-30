@@ -1,0 +1,17 @@
+instalar: npm i *pack*
+
+instalar em devDependecies: npm i *pack* --save-dev
+instalar em dependecies: npm i *pack* --save-prod
+//devDependecies são necessárias apenas na produção, utlizaremos apenas o bundle daquilo q foi usado ex:Webpack
+
+instalar versão específica:  npm i *pack*@2.1.0
+instalar sem modificar e atualizar dps: npm i *pack*2.1.0 -E
+instalar nova versão da versão minor e patch: npm i *pack*@4.x
+                                                          num da versão
+desistalar: npm uninstall *pack*
+
+atualizar: npm update
+
+listar sem profundidade: npm ls-lenght=0
+listar com profundidade: npm ls
+//mostra até arquivos que os pack são dependentes
