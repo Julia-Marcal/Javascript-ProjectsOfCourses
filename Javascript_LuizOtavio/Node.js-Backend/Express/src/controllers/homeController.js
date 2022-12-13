@@ -1,5 +1,5 @@
 exports.paginaInicial= (req, res) =>{
-    res.rende('index')
+    res.render('index')
 }
 
 exports.TrataPost = (req,res) =>{
