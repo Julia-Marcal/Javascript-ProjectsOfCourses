@@ -2,8 +2,17 @@ require('dotenv').config()
 
 const express = require('express');
 const app = express();
+const mongoose = require('mongoose');
+const session = require('express-session');
+const MongoStore = require('connect-mongo');
+const flash = require('connect-flash');
+const helmet = require('helmet');
+const csrf = require('csurf')
+const routes = require('./routes');
+const path = require('path');
+const { memoryUsage } = require('process');
+const {middlewareGlobal, checkCsrfError, csrfMiddleware} = require('./src/middlewares/middleware');
 
-const mongoose = require('mongoose')
 //para não aparecer erro
 mongoose.set('strictQuery', false);
 mongoose.connect(process.env.CONNECTIONSTRING, { useNewUrlParser: true, useUnifiedTopology: true})
@@ -12,15 +21,6 @@ mongoose.connect(process.env.CONNECTIONSTRING, { useNewUrlParser: true, useUnifi
     app.emit('pronto');
 })
 .catch(e => console.log(e))
-const session = require('express-session');
-const MongoStore = require('connect-mongo')
-const flash = require('connect-flash')
-
-
-const routes = require('./routes')
-const path = require('path');
-const { memoryUsage } = require('process');
-const {middlewareGlobal} = require('./src/middlewares/middleware');
 
 app.use(express.urlencoded({ extended : true}))
 //conteudo estatico css,img etc
@@ -40,17 +40,17 @@ const sessionOptions = session({
 app.use(sessionOptions)
 app.use(flash());
 
+app.use(helmet())
+
 //SETANDO VIEWS DO SRC
 app.set('views', path.resolve(__dirname, 'src', 'views'));
 app.set('view engine', 'ejs')
 
+app.use(csrf());
+app.use(checkCsrfError)
+app.use(csrfMiddleware)
 app.use(middlewareGlobal)
 app.use(routes)
-
-//a interrogação torna o parametro opcional
-//req.params acessa os parametros da url
-//req.query acessa oq estiver na query
-
 
 //o server só é aberto qnd a base de dados for totalmente ouvida
 app.on('pronto', ()=> {
