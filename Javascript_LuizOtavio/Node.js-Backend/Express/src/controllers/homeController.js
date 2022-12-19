@@ -1,4 +1,5 @@
 exports.paginaInicial= (req, res, next) =>{
+    req.session.usaro 
     res.render('index')
     next()
 }
