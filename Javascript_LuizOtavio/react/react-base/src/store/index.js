@@ -1,26 +1,20 @@
-import { createStore } from 'redux';
+import { persistStore } from 'redux-persist';
+import { createStore, applyMiddleware } from 'redux';
+import createSagaMiddleware from 'redux-saga';
 
-const initialState = {
-  botaoClicado: false,
-};
+import persistReducers from './modules/reduxPersist';
 
-// estado atual está sendo copiado para o new state com a spread operator
-// e depois trocando o estado (se for true vira false e visse verssa)
+import rootReducer from './modules/rootReducer';
+import rootSaga from './modules/rootSagas';
 
-const reducer = (state = initialState, action) => {
-  switch (action.type) {
-    case 'BOTAO_CLICADO': {
-      const newState = { ...state };
-      newState.botaoClicado = !newState.botaoClicado;
-      return newState;
-    }
+const sagaMiddleware = createSagaMiddleware();
 
-    default: {
-      return state;
-    }
-  }
-};
+const store = createStore(
+  persistReducers(rootReducer),
+  applyMiddleware(sagaMiddleware)
+);
 
-const store = createStore(reducer);
+sagaMiddleware.run(rootSaga);
 
+export const persistor = persistStore(store);
 export default store;
