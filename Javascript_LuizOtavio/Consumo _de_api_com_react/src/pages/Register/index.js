@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-bind */
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import { isEmail } from 'validator';
@@ -13,8 +14,8 @@ export default function Register() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  async function handleSubmit(e) {
-    e.preventDefault();
+  async function handleSubmit(event) {
+    event.preventDefault();
     let formErrors = false;
 
     if (nome.length < 3 || nome.length > 255) {
@@ -35,12 +36,11 @@ export default function Register() {
     if (formErrors) return;
 
     try {
-      await axios.post('/users', {
+      await axios.post('/users/', {
         nome,
         password,
         email,
       });
-      toast.success('Cadastrado com sucesso');
       history.push('/login');
     } catch (err) {
       const errors = get(err, 'response.data.errors', []);
@@ -52,7 +52,7 @@ export default function Register() {
   return (
     <Container>
       <h1>Crie sua conta</h1>
-      <Form onSubmit={handleSubmit()}>
+      <Form onSubmit={handleSubmit}>
         <label htmlFor="nome">
           Nome:
           <input
