@@ -2,13 +2,14 @@
 import React from 'react';
 import { toast } from 'react-toastify';
 import { isEmail } from 'validator';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { get } from 'lodash';
 
 import * as actions from '../../store/modules/auth/actions';
 
 import { Form } from './styled';
 import { Container } from '../../styles/GlobalStyles';
+import Loading from '../../components/Loading';
 
 export default function Login(props) {
   const dispacth = useDispatch();
@@ -17,6 +18,8 @@ export default function Login(props) {
 
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
+
+  const isLoading = useSelector((state) => state.auth.isLoading);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -40,6 +43,7 @@ export default function Login(props) {
 
   return (
     <Container>
+      <Loading isLoading={isLoading} />
       <h1>Login</h1>
       <Form onSubmit={handleSubmit}>
         <input
